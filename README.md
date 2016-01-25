@@ -70,7 +70,7 @@ On OSX:
 
     brew install confuse libarchive libsodium
 
-On Ubuntu:
+On Ubuntu 14.04:
 
     # libconfuse 2.8 is required but not available in apt
     curl -L https://github.com/martinh/libconfuse/releases/download/v2.8/confuse-2.8.tar.gz | tar -xz -C /tmp
@@ -79,7 +79,17 @@ On Ubuntu:
     popd
     rm -rf /tmp/confuse-2.8
     
-    sudo apt-get install libarchive-dev libsodium-dev
+    # libsodium isn't included in apt until 15.04 (Vivid Vervet)
+    curl -L https://download.libsodium.org/libsodium/releases/libsodium-1.0.8.tar.gz | tar -xz -C /tmp
+    pushd /tmp/libsodium-1.0.8
+    ./configure && make && sudo make install
+    popd
+    rm -rf /tmp/libsodium-1.0.8
+    
+    sudo apt-get install libarchive-dev autoconf
+    
+    # Rebuild the shared library cache
+    sudo ldconfig
 
 On CentOS 6:
 
@@ -103,6 +113,9 @@ On CentOS 6:
     ./configure && make && sudo make install
     popd
     rm -rf /tmp/libsodium-1.0.8
+
+    # Rebuild the shared library cache
+    sudo ldconfig
     
 On CentOS 7:
 
